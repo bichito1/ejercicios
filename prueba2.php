@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 </head>	
 <body>
-<h1>BASE DE DATOS</h1>
+<h1>BASE DE DATOSSSS</h1>
 
 
 <?php	
