@@ -21,10 +21,10 @@
 		<input type="text" name="apellidos">
 		<br>
 		<label>Fecha_nacimiento</label>
-		<input id="fecha" type="text" name="fecha_nacimieto">
+		<input id="fecha" type="text" name="fecha_nacimiento">
 		<br>
 		<label>curso</label>
-		<select name="curso">
+		<select name="curso_id">
 	<?php
 		$conexion = new mysqli("localhost", "root", "Palomita", 'colegio');
 		$sql = "SELECT * FROM curso";
