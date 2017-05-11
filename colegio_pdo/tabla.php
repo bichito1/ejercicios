@@ -10,6 +10,10 @@
 
 <?php	
 
+	ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
 	$db = new PDO("mysql:host=localhost;dbname=colegio;charset=utf8","root", "Palomita");
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -38,7 +42,7 @@
 	echo "<thead>";	
 	echo "<tr>";
 	foreach ($nombreColumnas as $nombreColumna) {
-	 echo "<th>" . $nombreColumna . "</th>";
+	 echo "<th style='text-transform: capitalize;'>" . $nombreColumna . "</th>";
 	}
 
 	echo "</tr>";
@@ -49,13 +53,15 @@
 	foreach ($primeraFila as $clave => $elementosPrimeraFila) {
 		if ($clave == 'fecha_nacimiento') {
 		echo '<td>' . date("d-m-Y" , strtotime($elementosPrimeraFila)). '</td>';	
-	} else {
+	} else if ($clave == 'nota') {
+    		echo '<td>' . number_format($elementosPrimeraFila , 2, ',', '.') . '</td>';
+        }else{
 	
 	 echo'<td>' . $elementosPrimeraFila . '</td>';	
 		}
 	}
 	echo "</tr>";	
-
+//esta lina hace
 	while ($fila = $st->fetch(PDO::FETCH_ASSOC)) {
 	echo "<tr>";
 	echo "<td>" . $fila["id"] . "</td>";
@@ -64,7 +70,8 @@
 	echo "<td>" . $fila["nombre"] . "</td>";
 	echo "<td>" . $fila["apellidos"] . "</td>";
 	echo "<td>" . date("d-m-Y" , strtotime($fila["fecha_nacimiento"])) . "</td>";
-	echo "<td>" . $fila["nota"] . "</td>";
+	echo "<td>" . number_format($fila["nota"] , 2, ',', '.') . "</td>";
+	echo "<td>" .'<img src="uploads/' . $fila['foto'] . '">' . "</td>";	
 	echo "</tr>";
 	}
 	echo "</tbody>";

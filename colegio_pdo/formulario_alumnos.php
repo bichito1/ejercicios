@@ -52,6 +52,9 @@
 
 		</select>
 		<br>
+		<label>Nota</label>
+		<input type="text" name="nota"/>
+		<br>
 		<input type="file" name="foto"/>
 		<br>
 		<input type="submit" value="Enviar">
