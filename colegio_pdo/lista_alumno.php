@@ -42,7 +42,12 @@
 	echo "<thead>";	
 	echo "<tr>";
 	foreach ($nombreColumnas as $nombreColumna) {
+	if  (strpos($nombreColumna, "_") == true) {
+         echo "<th style='text-transform: capitalize;'>" . str_replace("_"," ", $nombreColumna) . "</th>";
+    } else {
+	
 	 echo "<th style='text-transform: capitalize;'>" . $nombreColumna . "</th>";
+	}
 	}
 
 	echo "</tr>";
@@ -71,7 +76,7 @@
 	echo "<td>" . $fila["apellidos"] . "</td>";
 	echo "<td>" . date("d-m-Y" , strtotime($fila["fecha_nacimiento"])) . "</td>";
 	echo "<td>" . number_format($fila["nota"] , 2, ',', '.') . "</td>";
-	echo "<td>" .'<img src="uploads/' . $fila['foto'] . '">' . "</td>";	
+	echo "<td>" .'<img width="50" src="uploads/' . $fila['foto'] . '">' . "</td>";	
 	echo "</tr>";
 	}
 	echo "</tbody>";
@@ -89,16 +94,33 @@ echo "</table>"
 <script
 	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js">
 </script>
+
  <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+
+<script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
+
 <script>
+
 	$(document).ready(function(){
-    $('#tabla').DataTable( {
+
+         $.fn.dataTable.moment( 'DD-MM-YYYY' );
+     
+
+    
+       $('#tabla').DataTable({
+
         "language": {
                 "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
             }
-	 });
-});	
+
+        });
+
+}); 
+
 </script>
+
+
 </body>
 </html>
