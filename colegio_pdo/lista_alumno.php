@@ -37,7 +37,7 @@
 	$nombreColumnas = array_keys($primeraFila);
 	//var_dump($nombreColumnas);
 
-	echo "<table id='tabla' class='display'>";
+	echo "<table id='tabla' class='display' style ='text-align: center'>";
 	
 	echo "<thead>";	
 	echo "<tr>";

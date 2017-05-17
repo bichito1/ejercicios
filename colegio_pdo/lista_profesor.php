@@ -37,7 +37,7 @@
 	$nombreColumnas = array_keys($primeraFila);
 	//var_dump($nombreColumnas);
 
-	echo "<table id='tabla' class='display'>";
+	echo "<table id='tabla' class='display' style ='text-align: center'>";
 	
 	echo "<thead>";	
 	echo "<tr>";
@@ -70,7 +70,6 @@
 	while ($fila = $st->fetch(PDO::FETCH_ASSOC)) {
 	echo "<tr>";
 	echo "<td>" . $fila["id"] . "</td>";
-	//echo "<td>" . $fila["curso_id"] . "</td>";
 	echo "<td>" . $fila["nombre"] . "</td>";
 	echo "<td>" . $fila["apellidos"] . "</td>";
 	echo "<td>" . date("d-m-Y" , strtotime($fila["fecha_nacimiento"])) . "</td>";
@@ -94,25 +93,26 @@ echo "</table>"
 
  <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
 
-<scrpt src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
 
-<scrpt src="//cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>
+
 
 <script>
-     $(document).ready(function() {
-    $.fn.dataTable.moment( 'D-M-Y' );
+    $(document).ready(function(){
+
+         $.fn.dataTable.moment( 'DD-MM-YYYY' );
+     
+
     
-    $('#tabla').DataTable();
-} );	
-</script>
+       $('#tabla').DataTable({
 
-<script>
-	$(document).ready(function(){
-    $('#tabla').DataTable( {
         "language": {
                 "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
             }
-	 });
+
+        });
+
 }); 
 </script>
 

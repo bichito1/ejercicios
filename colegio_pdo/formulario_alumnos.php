@@ -10,20 +10,26 @@
 <header>
 </header>
 <main>
+	<div>
+	<h1>FORMULARIO ALUMNO</h1>
 	<form action="nuevo_alumno.php" method="post" enctype="multipart/form-data">
-		<label>DNI *</label>
+		<label>DNI: *</label>
+		<br>
 		<input type="text" name="dni" required>
 		<br>
-		<label>Nombre</label>
+		<label>Nombre:</label>
+		<br>
 		<input type="text" name="nombre">
 		<br>
-		<label>Apellidos</label>
+		<label>Apellidos:</label>
+		<br>
 		<input type="text" name="apellidos">
 		<br>
-		<label>Fecha_nacimiento</label>
+		<label>Fecha_nacimiento:</label>
+		<br>
 		<input id="datepicker" type="text" name="fecha_nacimiento">
 		<br>
-		<label>curso</label>
+		<label>curso:</label>
 		<select name="curso_id">
 	<?php
                 ini_set('display_errors', 1);
@@ -52,13 +58,14 @@
 
 		</select>
 		<br>
-		<label>Nota</label>
+		<label>Nota:</label>
 		<input type="text" name="nota"/>
 		<br>
 		<input type="file" name="foto"/>
 		<br>
 		<input type="submit" value="Enviar">
 	</form>
+	</div>
 </main>
 <footer></footer>
 <script

@@ -10,17 +10,22 @@
 <header>
 </header>
 <main>
+	<div>
+	<h1>FORMULARIO PROFESOR</h1>
 	<form action="nuevo_profesor.php" method="post" enctype="multipart/form-data">
-		<label>Nombre</label>
+		<label>Nombre:</label>
+		<br>
 		<input type="text" name="nombre">
 		<br>
-		<label>Apellidos</label>
+		<label>Apellidos:</label>
+		<br>
 		<input type="text" name="apellidos">
 		<br>
-		<label>Fecha_nacimiento</label>
+		<label>Fecha_nacimiento:</label>
+		<br>
 		<input id="datepicker" type="text" name="fecha_nacimiento">
 		<br>
-		<label>curso</label>
+		<label>curso:</label>
 		<select name="curso_id">
 	<?php
                 ini_set('display_errors', 1);
@@ -51,6 +56,7 @@
 		<br>
 		<input type="submit" value="Enviar">
 	</form>
+	</div>
 </main>
 <footer></footer>
 <script
