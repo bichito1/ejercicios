@@ -6,6 +6,7 @@
 	<meta charset="UTF-8">
 </head>	
 <body>
+
 <h1>DATOS ALUMNO</h1>
 
 <?php	
@@ -30,35 +31,6 @@
 	$datosAlumno = $st->fetch(PDO::FETCH_ASSOC);
 	//var_dump($datosAlumno);
 
-	/*$nombreColumnas = array_keys($primeraFila);
-	var_dump($nombreColumnas);*/
-
-	echo "<table id='tabla' class='display'>";
-	
-	foreach ($datosAlumno as $clave => $datoAlumno) {
-	    echo "<tr>";
-	    if (strpos($clave, "_") == true) {
-         	echo "<td style='text-transform: capitalize;'>" . str_replace("_"," ", $clave) . "</td>";
-    	    } else {
-	
-	    echo "<td style='text-transform: capitalize;'>" . $clave . "</td>";
-	    }	
-	
-            if ($clave == 'fecha_nacimiento') {
-		echo '<td>' . date("d-m-Y" , strtotime($datoAlumno)). '</td>';	
-	    } else if ($clave == 'nota') {
-    		echo '<td>' . number_format($datoAlumno , 2, ',', '.') . '</td>';
-	    } else if ($clave == 'foto') {
-		echo "<td>" . '<img  width="50" src="uploads/' . $datoAlumno . '">' . "</td>";	
-            } else {
-	        echo'<td>' . $datoAlumno . '</td>';	
-            }
-
-	    echo "</tr>";	
-	}
-
-	
-echo "</table>"
 	
 ?>
 <script
