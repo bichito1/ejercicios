@@ -66,6 +66,7 @@
 	 echo'<td>' . $elementosPrimeraFila . '</td>';	
 		}
 	}
+	echo "<td>". '<a href="editar_alumno.php?id=' . $primeraFila['id'] . '">Editar</a></td>';
 	echo "</tr>";	
 //esta lina hace
 	while ($fila = $st->fetch(PDO::FETCH_ASSOC)) {
@@ -77,7 +78,8 @@
 	echo "<td>" . $fila["apellidos"] . "</td>";
 	echo "<td>" . date("d-m-Y" , strtotime($fila["fecha_nacimiento"])) . "</td>";
 	echo "<td>" . number_format($fila["nota"] , 2, ',', '.') . "</td>";
-	echo "<td>" .'<img width="50" src="uploads/' . $fila['foto'] . '">' . "</td>";	
+	echo "<td>" . '<img width="50" src="uploads/' . $fila['foto'] . '">' . "</td>";	
+	echo "<td>" . '<a href="editar_alumno.php?id=' . $fila['id'] . '">Editar</a></td>';
 	echo "</tr>";
 	}
 	echo "</tbody>";
