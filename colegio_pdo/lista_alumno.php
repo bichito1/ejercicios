@@ -61,7 +61,9 @@
 		echo '<td>' . date("d-m-Y" , strtotime($elementosPrimeraFila)). '</td>';	
 	} else if ($clave == 'nota') {
     		echo '<td>' . number_format($elementosPrimeraFila , 2, ',', '.') . '</td>';
-        }else{
+        }else if ($clave == 'foto'){
+		echo '<td><img width="50" src="uploads/' . $elementosPrimeraFila . '"></td>';
+	}else{	
 	
 	 echo'<td>' . $elementosPrimeraFila . '</td>';	
 		}
