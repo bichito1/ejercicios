@@ -62,13 +62,13 @@
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);*/
 		$sql = "SELECT * FROM curso";
 	
-		try{
+		/*try{
 		$st = $db->prepare($sql);
 		$st->execute();	
 	} catch (PDOException $e) {
 		echo $e->getMessage();
 		return false;	
-	}
+	}*/
 		
 
 		while ($fila = $st->fetch(PDO::FETCH_ASSOC)) {
@@ -106,7 +106,7 @@
 
 </script>
 <script>
-$(function() {
+	$(function() {
  		$("#datepicker").datepicker(
 			$.datepicker.regional["es"]);
 	});

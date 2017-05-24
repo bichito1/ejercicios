@@ -17,21 +17,25 @@
 
 	$db = new PDO("mysql:host=localhost;dbname=colegio;charset=utf8","root", "Palomita");
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-	//$sql = "SELECT * FROM alumno";
+	
+	//$numeroPaginaActual = $_GET['pagina'];
+	$numeroPaginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
 	$filasPorPagina = 5;
-	$sql = "SELECT * FROM alumno LIMIT" . $filasPorPagina;
+	$offset = ($numeroPaginaActual - 1) * $filasPorPagina;
+
+	$sql = "SELECT * FROM alumno LIMIT " . $filasPorPagina . ' OFFSET ' . $offset;
+
+	//var_dump($sql);
 	
 	
-	$sql = "SELECT COUNT(*) FROM alumno";
-	$st = $db->prepare($sql);
-	$st->execute();
 
-	$totalResultados = $st->fetch(PDO::FETCH_ASSOC);
+	$columnaOrden = isset($_GET['columna_orden']) ? $_GET['columna_orden'] : 'nombre';
+	$orden = isset($_GET['orden']) ? $_GET['orden'] : 'asc';
 
-	$numeroPaginas = $totalResultados['COUNT(*)'] / $filasPorPagina;
-	var_dump(ceil($numeroPaginas));		
+	$sql = "SELECT * FROM alumno
+		ORDER BY " . $columnaOrden . ' ' . $orden;"
+		LIMIT " .$filasPorPagina . 'OFFSET' . $offset;
 
 	try{
 		$st = $db->prepare($sql);
@@ -49,28 +53,31 @@
 	//var_dump($nombreColumnas);
 ?>
 
-	<table id='tabla' class='display' style ='text-align: center'>
+	<table id='lista' class='display' style ='text-align: center'>
 	
 	<thead>	
 	<tr>
 <?php
-
-	foreach ($nombreColumnas as $nombreColumna) {
-	if  (strpos($nombreColumna, "_") == true) {
-         echo "<th style='text-transform: capitalize;'>" . str_replace("_"," ", $nombreColumna) . "</th>";
-    } else {
+        //cabecera tabla
+	foreach ($nombreColumnas as $nombreColumna) { ?>
+ 	  <?php if (strpos($nombreColumna, "_") == true) { ?>
+          <th style='text-transform: capitalize;'> 
+            <?php str_replace("_"," ", $nombreColumna) ?>
+          </th>
+          <?php } else { ?>
+	  <th style='text-transform: capitalize;'>
+            <?php $nombreColumna ?>
+          </th>
+	  <?php } ?>
+        <?php } ?>
 	
-	 echo "<th style='text-transform: capitalize;'>" . $nombreColumna . "</th>";
-	}
-	}
-?>
 	</tr>
 	</thead>
 
 	<tbody>
 	<tr>
 <?php
-
+        //primera fila
 	foreach ($primeraFila as $clave => $datoPrimeraFila) { 
           if ($clave == 'nota') {
             echo '<td>' . number_format($datoPrimeraFila , 2, ',', '.') . '</td>';
@@ -104,9 +111,23 @@
 	
 	</table>
 	
+<?php
 
 
+	
+	$sql = "SELECT COUNT(*) FROM alumno";
+	$st = $db->prepare($sql);
+	$st->execute();
 
+	$totalResultados = $st->fetch(PDO::FETCH_ASSOC);
+
+	$numeroPaginas = $totalResultados['COUNT(*)'] / $filasPorPagina;
+	//var_dump(ceil($numeroPaginas));	
+
+	for ($i=1; $i<=ceil($numeroPaginas); $i++) {
+		echo '<a href="lista_alumno_sin_datatable.php?pagina=' . $i . '">' . $i . '</a>';	
+	}	
+?>
 <script
 			  src="https://code.jquery.com/jquery-3.2.1.min.js"
 			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
