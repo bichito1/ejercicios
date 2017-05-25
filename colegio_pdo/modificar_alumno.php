@@ -33,7 +33,7 @@
 	}
 	
 	if ($_FILES['foto']['error'] == 4){
-	   $cadenaColumnaFoto = '';
+	   $cadenaColumnaFoto = ' ';
 	} else {
 	   $nombreArchivo = md5(unique());
       	   move_uploaded_file($_FILES["foto"]["tmp_name"], "uploads/" .  $nombreArchivo);

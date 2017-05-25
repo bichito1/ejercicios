@@ -18,24 +18,17 @@
 	$db = new PDO("mysql:host=localhost;dbname=colegio;charset=utf8","root", "Palomita");
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	
-	//$numeroPaginaActual = $_GET['pagina'];
 	$numeroPaginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
 	$filasPorPagina = 5;
 	$offset = ($numeroPaginaActual - 1) * $filasPorPagina;
-
-	$sql = "SELECT * FROM alumno LIMIT " . $filasPorPagina . ' OFFSET ' . $offset;
-
-	//var_dump($sql);
-	
-	
-
+	var_dump($offset);
 	$columnaOrden = isset($_GET['columna_orden']) ? $_GET['columna_orden'] : 'nombre';
-	$orden = isset($_GET['orden']) ? $_GET['orden'] : 'asc';
+	$ordenLista = isset($_GET['orden']) ? $_GET['orden'] : 'asc';
 
 	$sql = "SELECT * FROM alumno
-		ORDER BY " . $columnaOrden . ' ' . $orden;"
-		LIMIT " .$filasPorPagina . 'OFFSET' . $offset;
+		ORDER BY " . $columnaOrden . ' ' . $ordenLista .
+		" LIMIT " . $filasPorPagina . ' OFFSET ' . $offset;
 
 	try{
 		$st = $db->prepare($sql);
@@ -45,7 +38,6 @@
 		return false;	
 	}
 	
-
 	$primeraFila = $st->fetch(PDO::FETCH_ASSOC);
 	//var_dump($primeraFila);
 
@@ -53,24 +45,31 @@
 	//var_dump($nombreColumnas);
 ?>
 
-	<table id='lista' class='display' style ='text-align: center'>
-	
+	<table id='lista' class='display'>
 	<thead>	
 	<tr>
 <?php
-        //cabecera tabla
-	foreach ($nombreColumnas as $nombreColumna) { ?>
- 	  <?php if (strpos($nombreColumna, "_") == true) { ?>
-          <th style='text-transform: capitalize;'> 
-            <?php str_replace("_"," ", $nombreColumna) ?>
-          </th>
-          <?php } else { ?>
-	  <th style='text-transform: capitalize;'>
-            <?php $nombreColumna ?>
-          </th>
-	  <?php } ?>
-        <?php } ?>
-	
+	//cabecera tabla
+	foreach ($primeraFila as $nombreColumna => $datoPrimeraFila) { ?>
+	  <?php
+		if($nombreColumna == $columnaOrden) {
+		   $ordenEnlace = $ordenLista == 'asc' ? 'desc' : 'asc';		
+		} else {
+		  $ordenEnlace = 'asc';
+		}
+		$parametrosUrl = 'columna_orden=' . $nombreColumna . '&' . 'orden=' . $ordenEnlace;
+	  ?>
+	  <th>
+	    <a href="lista_alumno_sin_datatable.php?<?php echo $parametrosUrl ?>">
+        	 <?php if (strpos($nombreColumna, "_") == true) {
+                    echo str_replace("_", " ", $nombreColumna); 
+                } else { 
+                    echo $nombreColumna;
+	        } ?>
+	    </a> 
+	  </th>
+          <?php } ?>
+
 	</tr>
 	</thead>
 
@@ -113,8 +112,6 @@
 	
 <?php
 
-
-	
 	$sql = "SELECT COUNT(*) FROM alumno";
 	$st = $db->prepare($sql);
 	$st->execute();
@@ -122,12 +119,13 @@
 	$totalResultados = $st->fetch(PDO::FETCH_ASSOC);
 
 	$numeroPaginas = $totalResultados['COUNT(*)'] / $filasPorPagina;
-	//var_dump(ceil($numeroPaginas));	
+	var_dump(ceil($numeroPaginas));
+?>	
 
-	for ($i=1; $i<=ceil($numeroPaginas); $i++) {
-		echo '<a href="lista_alumno_sin_datatable.php?pagina=' . $i . '">' . $i . '</a>';	
-	}	
-?>
+        <?php for ($i=1; $i<=ceil($numeroPaginas); $i++) { ?>
+		<a href="lista_alumno_sin_datatable.php?pagina=<?php echo $i ?>&columna_orden=<?php echo $columnaOrden ?>&orden=<?php echo $ordenLista ?>"> <?php echo $i ?></a>	
+	<?php }	?>
+
 <script
 			  src="https://code.jquery.com/jquery-3.2.1.min.js"
 			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="

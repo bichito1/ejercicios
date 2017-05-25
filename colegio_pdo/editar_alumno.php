@@ -18,7 +18,7 @@
 		$db = new PDO("mysql:host=localhost;dbname=colegio;charset=utf8","root", "Palomita");
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
-	$sql = "SELECT * FROM alumno  WHERE id = " . $_GET['id'];
+	$sql = "SELECT * FROM alumno  WHERE id =" . $_GET['id'];
 	
 
 		try{
@@ -54,26 +54,24 @@
 		<label>curso:</label>
 		<select name="curso_id">
 	<?php
-                /*ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
-
-		$db = new PDO("mysql:host=localhost;dbname=colegio;charset=utf8","root", "Palomita");
-		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);*/
+               
 		$sql = "SELECT * FROM curso";
 	
-		/*try{
+		try{
 		$st = $db->prepare($sql);
 		$st->execute();	
-	} catch (PDOException $e) {
+		} catch (PDOException $e) {
 		echo $e->getMessage();
 		return false;	
-	}*/
-		
+		}
 
-		while ($fila = $st->fetch(PDO::FETCH_ASSOC)) {
+		while ($curso = $st->fetch(PDO::FETCH_ASSOC)) {
+			if ($fila['curso_id'] == $curso['id']) {
+			echo '<option value="' . $curso['id'] .'" selected>' . $curso["nombre"] . '</option>';	
+			}else{
 
-			echo '<option value="' .$fila['id'].'">' . $fila["nombre"] . '</option>';
+			echo '<option value="' . $curso['id'] .'">' . $curso["nombre"] . '</option>';
+			}		
 		}
 		
 	?>
