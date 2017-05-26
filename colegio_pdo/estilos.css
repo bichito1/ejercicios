@@ -13,3 +13,6 @@ div{
 #lista th{
 	text-transform: capitalize;
 }
+#alumno .extra{
+	text-transform: capitalize;
+}

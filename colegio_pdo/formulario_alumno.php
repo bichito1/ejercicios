@@ -13,24 +13,31 @@
 	<div>
 	<h1>FORMULARIO ALUMNO</h1>
 	<form action="nuevo_alumno.php" method="post" enctype="multipart/form-data">
-		<label>DNI: *</label>
-		<br>
-		<input type="text" name="dni" required>
-		<br>
-		<label>Nombre:</label>
-		<br>
-		<input type="text" name="nombre">
-		<br>
-		<label>Apellidos:</label>
-		<br>
-		<input type="text" name="apellidos">
-		<br>
-		<label>Fecha_nacimiento:</label>
-		<br>
-		<input id="datepicker" type="text" name="fecha_nacimiento">
-		<br>
-		<label>curso:</label>
-		<select name="curso_id">
+	<table id="alumno">
+	  	<tr>
+		<td><label>DNI: *</label></td>
+		<td><input type="text" name="dni" required></td>
+		</tr>
+	
+		<tr>
+		<td><label>Nombre:</label></td>
+		<td><input type="text" name="nombre"></td>
+		</tr>
+	
+		<tr>
+		<td><label>Apellidos:</label></td>
+		<td><input type="text" name="apellidos"></td>
+		</tr>
+		
+		<tr>
+		<td><label>Fecha_nacimiento:</label></td>
+		<td><input id="datepicker" type="text" name="fecha_nacimiento"></td>
+		</tr>
+		
+		<tr>
+		<td><label>curso:</label></td>
+		<td>
+			<select name="curso_id">
 	<?php
                 ini_set('display_errors', 1);
                 ini_set('display_startup_errors', 1);
@@ -55,15 +62,49 @@
 		}
 		
 	?>
+			</select>
+		</td>
+		</tr>
+		
+		<tr>
+		<td><label>Actividades Extraescolares:</label></td>
+		
+	<?php
+		$sql = "SELECT * FROM actividad_extra";
 
-		</select>
-		<br>
-		<label>Nota:</label>
-		<input type="text" name="nota"/>
-		<br>
-		<input type="file" name="foto"/>
-		<br>
-		<input type="submit" value="Enviar">
+		try{
+		$st = $db->prepare($sql);
+		$st->execute();	
+		} catch (PDOException $e) {
+		echo $e->getMessage();
+		return false;	
+		}?>	
+			
+			
+		<?php while ($fila = $st->fetch(PDO::FETCH_ASSOC)) {?>
+			
+			<tr>
+                          <td class="extra"><label><?php echo $fila['nombre'] ?></label></td>
+			  <td><input type="checkbox" value="<?php echo $fila['id'] ?>" name="actividad_extra[]"></td>
+			</tr>
+		<?php }?>
+			
+		
+		</tr>
+	
+		<tr>
+		<td><label>Nota:</label></td>
+		<td><input type="text" name="nota"/></td>
+		</tr>
+		
+		<tr>
+		<td><input type="file" name="foto"/></td>
+		</tr>
+		
+		<tr>
+		<td><input type="submit" value="Enviar"></td>
+		</tr>
+	</table>
 	</form>
 	</div>
 </main>
