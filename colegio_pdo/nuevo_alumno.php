@@ -12,20 +12,35 @@
 	$nombreArchivo = md5(uniqid());
 
 	var_dump($_POST);
-
-	$sql = "INSERT INTO alumno (curso_id, dni, nombre, apellidos, fecha_nacimiento, nota, foto) VALUES (" .
-           $_POST['curso_id']. ", '" .
-           $_POST['dni']. "', '" . 
-           $_POST['nombre']. "', '" .
-           $_POST['apellidos']. "', '" .
-           date("Y-m-d", strtotime($_POST["fecha_nacimiento"])) . "', '" . 
-	   str_replace(",",".", $_POST['nota']) .  "', '" .
-           $nombreArchivo.
-        "')";
-
+	
 	try{
-		$st = $db->prepare($sql);
-		$st->execute();	
+
+	   $sql = "INSERT INTO alumno (curso_id, dni, nombre, apellidos, fecha_nacimiento,  nota, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+	   $st = $db->prepare($sql);
+	   $st->execute(array(
+	     $_POST['curso_id'],
+             $_POST['dni'],
+             $_POST['nombre'],
+             $_POST['apellidos'],
+             date("Y-m-d", strtotime($_POST["fecha_nacimiento"])),
+	     str_replace(",",".", $_POST['nota']),
+	     $nombreArchivo
+           ));	
+	
+	   $ultimoIdInsertado = $db->lastInsertId();
+
+	   $sql = "INSERT INTO alumno_actividad_extra
+		   (alumno_id, actividad_extra_id)
+	  	   VALUES
+		   (?, ?)";
+
+	   //INSERTAMOS LAS ACTIVIDADES EXTRAS ASOCIADAS AL ALUMNO
+	   foreach ($_POST['actividad_extra'] as $actividadExtraId) {
+	      $st = $db->prepare($sql);
+	      $st->execute(array($ultimoIdInsertado, $actividadExtraId));
+	   }
+
 	} catch (PDOException $e) {
 		echo $e->getMessage();
 		return false;	

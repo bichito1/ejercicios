@@ -18,8 +18,21 @@
 	$db = new PDO("mysql:host=localhost;dbname=colegio;charset=utf8","root", "Palomita");
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$sql = "SELECT * FROM alumno";
-	//var_dump($sql);	
+	//$sql = "SELECT * FROM alumno";
+	//var_dump($sql);
+	
+	$sql = "SELECT
+		  alumno.id,
+		  curso.nombre AS nombre_curso,
+		  alumno.dni,
+		  alumno.nombre AS nombre_alumno,
+		  alumno.apellidos,
+		  alumno.fecha_nacimiento,
+		  alumno.nota,
+		  alumno.foto
+		FROM alumno
+		JOIN curso ON alumno.curso_id = curso.id
+	       ";	
 
 	try{
 		$st = $db->prepare($sql);
@@ -58,14 +71,14 @@
 	echo "<tr>";
 	foreach ($primeraFila as $clave => $elementosPrimeraFila) {
 		if ($clave == 'fecha_nacimiento') {
-		echo '<td>' . date("d-m-Y" , strtotime($elementosPrimeraFila)). '</td>';	
-	} else if ($clave == 'nota') {
-    		echo '<td>' . number_format($elementosPrimeraFila , 2, ',', '.') . '</td>';
-        }else if ($clave == 'foto'){
-		echo '<td><img width="50" src="uploads/' . $elementosPrimeraFila . '"></td>';
-	}else{	
+		   echo '<td>' . date("d-m-Y" , strtotime($elementosPrimeraFila)). '</td>';	
+		} else if ($clave == 'nota') {
+    		   echo '<td>' . number_format($elementosPrimeraFila , 2, ',', '.') . '</td>';
+        	}else if ($clave == 'foto'){
+		   echo '<td><img width="50" src="uploads/' . $elementosPrimeraFila . '"></td>';
+		}else{	
 	
-	 echo'<td>' . $elementosPrimeraFila . '</td>';	
+		  echo'<td>' . $elementosPrimeraFila . '</td>';	
 		}
 	}
 	echo "<td>". '<a href="editar_alumno.php?id=' . $primeraFila['id'] . '">Editar</a></td>';
@@ -74,9 +87,9 @@
 	while ($fila = $st->fetch(PDO::FETCH_ASSOC)) {
 	echo "<tr>";
 	echo "<td>" . $fila["id"] . "</td>";
-	echo "<td>" . $fila["curso_id"] . "</td>";
+	echo "<td>" . $fila["nombre_curso"] . "</td>";
 	echo "<td>" . $fila["dni"] . "</td>";
-	echo "<td>" . $fila["nombre"] . "</td>";
+	echo "<td>" . $fila["nombre_alumno"] . "</td>";
 	echo "<td>" . $fila["apellidos"] . "</td>";
 	echo "<td>" . date("d-m-Y" , strtotime($fila["fecha_nacimiento"])) . "</td>";
 	echo "<td>" . number_format($fila["nota"] , 2, ',', '.') . "</td>";

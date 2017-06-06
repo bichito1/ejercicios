@@ -35,24 +35,27 @@
 	<div>
 	<h1>FORMULARIO ALUMNO</h1>
 	<form action="modificar_alumno.php" method="post" enctype="multipart/form-data">
-		<label>DNI: *</label>
-		<br>
-		<input type="text" name="dni" value="<?php echo $fila['dni']?>" required>
-		<br>
-		<label>Nombre:</label>
-		<br>
-		<input type="text" name="nombre" value="<?php echo $fila['nombre']?>">
-		<br>
-		<label>Apellidos:</label>
-		<br>
-		<input type="text" name="apellidos" value="<?php echo $fila['apellidos'] ?>">
-		<br>
-		<label>Fecha_nacimiento:</label>
-		<br>
-		<input id="datepicker" type="text" name="fecha_nacimiento" value="<?php echo $fila['fecha_nacimiento']?>">
-		<br>
-		<label>curso:</label>
-		<select name="curso_id">
+	   <table>
+	      <tr>
+		<td><label>DNI: *</label></td>
+		<td><input type="text" name="dni" value="<?php echo $fila['dni']?>" required></td>
+	      </tr>
+	      <tr>
+		<td><label>Nombre:</label></td>
+		<td><input type="text" name="nombre" value="<?php echo $fila['nombre']?>"></td>
+	      </tr>
+	      <tr>
+		<td><label>Apellidos:</label></td>
+		<td><input type="text" name="apellidos" value="<?php echo $fila['apellidos'] ?>"></td>
+	      </tr>
+	      <tr>
+		<td><label>Fecha_nacimiento:</label></td>
+		<td><input id="datepicker" type="text" name="fecha_nacimiento" value="<?php echo $fila['fecha_nacimiento']?>"></td>
+	      </tr>
+	      <tr>
+		<td><label>curso:</label></td>
+		<td>
+		   <select name="curso_id">
 	<?php
                
 		$sql = "SELECT * FROM curso";
@@ -75,15 +78,64 @@
 		}
 		
 	?>
+		   </select>
+		</td>
+	      </tr>
+	      <tr>
+		<td><label>Actividades Extraescolares:</label></td>
+		
+	<?php
+		/*$sql = "SELECT * FROM actividad_extra";
 
-		</select>
-		<br>
-		<label>Nota:</label>
-		<input type="text" name="nota" value="nota"/>
-		<br>
-		<input type="file" name="foto"/>
-		<br>
-		<input type="submit" value="Enviar">
+		try{
+		$st = $db->prepare($sql);
+		$st->execute();	
+		} catch (PDOException $e) {
+		echo $e->getMessage();
+		return false;	
+		}?>*/	
+			
+		$sql = "SELECT actividad_extra_id
+			   FROM alumno_actividad_extra
+			   WHERE alumno_id=?
+			  ";
+		 try{
+		 $st = $db->prepare($sql);
+		 $st->execute(array($_GET['id']));	
+		 } catch (PDOException $e) {
+		 echo $e->getMessage();
+		 return false;		   	
+	
+		  $actividadesExtraAlumno = $st->fetchAll(PDO::FETCH_COLUMN);
+
+		   foreach ($actividadesExtra as $actividadExtra) {?>
+			
+			<tr>
+                          <td class="extra"><label><?php echo $actividadExtra['nombre'] ?></label></td>
+			<?php
+			   $estadoCheckbox = '';
+			  if (in_array($actividadExtra['id'], $actividadesExtraAlumno)) {
+			     $estadoCheckbox = 'checked';
+			  } ?>
+			  <td>
+			     <input type="checkbox" value="<?php echo $actividadExtra['id'] ?>" name="actividad_extra[]"
+			     <?php echo $estadoCheckbox ?> >
+			  </td>
+			</tr>
+		<?php }?>
+			
+		</tr>
+	      <tr>
+		<td><label>Nota:</label></td>
+		<td><input type="text" name="nota" value="nota"/></td>
+	      </tr>
+	      <tr>
+		<td><input type="file" name="foto"/></td>
+	      </tr>
+	      <tr>
+		<td><input type="submit" value="Enviar"></td>
+	      </tr>
+	   </table>
 	</form>
 	</div>
 </main>
