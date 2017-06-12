@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>FORMULARIO</title>
+	<meta charset="utf-8">
+</head>
+<body>
+<header>
+</header>
+<main>
+
+	<form>
+	   <select id="provincia">
+	      <option>Selecciona una Provincia</option>
+	      <option value="1">Barcelona</option>
+	      <option value="2">Madrid</option>
+	      <option value="1">Guadalajara</option>
+	   </select>
+	   <select id="ciudad">
+	   </select>
+	</form>
+</main>
+<footer></footer>
+
+<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+
+<script>
+	$('#provincia') .on('change', function() {
+	  $.ajax( {
+	  url: 'select_dependiente_query.php',
+	  data: { provincia_id: $(this) .find("option:selected") .val()},
+	  success: function(response) {
+	    $('#ciudad') .html(response);
+	    //alert(response);
+	   }
+	  });	
+	});
+</script>
+
+</body>
+</html>
+</html>
