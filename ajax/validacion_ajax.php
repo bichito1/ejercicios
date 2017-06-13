@@ -12,7 +12,6 @@
 	$errorNombre = $errorApellidos = $errorEmail = $errorSitioWeb = '';
 	$errores = array();
 
-	if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 	  function saneado($valor) {
 	   $nuevoValor = trim($valor);
@@ -43,22 +42,20 @@
 
 	   if (empty($_POST['sitio_web'])) {
 	      $errores['sitio_web']= 'sitio web es obligatorio';
-	      $errores = true;
 	   } else {
 	      $sitio_web = saneado($_POST['sitio_web']);
 	      if (!filter_var($sitio_web, FILTER_VALIDATE_URL)) {
 		$errorSitioWeb = 'Formato sitio_web no váildo.';
 	      }
-	   }
+           }
 
+	if (empty($errores)) {
 
-	
-
-	if ($errores == false) {
 	   try{
-	   $sql = "INSERT INTO contacto (nombre, apellidos, email, sitio_web) VALUES (?, ?, ?, ?)";
-	   $st = $db->prepare($sql);
-	   $st->execute(array(
+
+	       $sql = "INSERT INTO contacto (nombre, apellidos, email, sitio_web) VALUES (?, ?, ?, ?)";
+	       $st = $db->prepare($sql);
+	       $st->execute(array(
 		$nombre,
              	$apellidos,
 		$email,
@@ -67,10 +64,15 @@
 
            
 	   } catch (PDOException $e) {
+
 		echo $e->getMessage();
 		return false;
+
 	   }
+	} else {
+	   header('Content-Type: application/json');
+	   echo json_encode($errores);	
 	}	
-}
+
 ?>
 

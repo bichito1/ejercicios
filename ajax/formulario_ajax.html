@@ -36,7 +36,7 @@
 		<tr>
 		<td><label>Sitio Web:</label></td>
 	   	<td><input type="text" name="sitio_web"></td>
-		<td><span class="error sitio web"></span></td>
+		<td><span class="error sitio-web"></span></td>
 		</tr>
 		
 		<tr>
@@ -59,20 +59,22 @@
 
 <script>
 	$('[type="submit"]').on('click', function(event) {
+
 	   event.preventDefault();
 	   var formulario_serializado = $('form').serialize();
 	   $('.error').empty();
 	   $.ajax({
 	     url: 'validacion_ajax.php',
 	     method: "POST",
-	     data: formulario_serilizado,
+	     data: formulario_serializado,
 	     success: function(respuesta){
-		if (respuesta.length) {
+		if (typeof(respuesta) == 'object') {
+			//console.log(respuesta);
 		   $.each(respuesta, function(campo, mensaje_error) {
 		     $('.error.' + campo).text(mensaje_error);
 		   });
 		} else {
-		   $('.mensaje').text('nos pondremos en contacto contigo.'),
+		   $('.mensaje').text('nos pondremos en contacto contigo.');
 		}
 	     }
 	   });	
