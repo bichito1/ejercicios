@@ -22,6 +22,7 @@
            date("Y-m-d", strtotime($_POST["fecha_nacimiento"])) . "', '" . 
 	   str_replace(",",".", $_POST['nota']) .  "', '" .
            $nombreArchivo.
+	   
         "')";
 
 	try{

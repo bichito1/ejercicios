@@ -20,14 +20,13 @@
 		
 	$sql = "SELECT * FROM alumno  WHERE id =" . $_GET['id'];
 	
-
 		try{
 		$st = $db->prepare($sql);
 		$st->execute();	
-	} catch (PDOException $e) {
+		} catch (PDOException $e) {
 		echo $e->getMessage();
 		return false;	
-	}
+		}
 	
 	$fila = $st->fetch(PDO::FETCH_ASSOC);
 	var_dump($fila)
@@ -75,7 +74,7 @@
 
 			echo '<option value="' . $curso['id'] .'">' . $curso["nombre"] . '</option>';
 			}		
-		}
+		};
 		
 	?>
 		   </select>
@@ -85,7 +84,7 @@
 		<td><label>Actividades Extraescolares:</label></td>
 		
 	<?php
-		/*$sql = "SELECT * FROM actividad_extra";
+		$sql = "SELECT * FROM actividad_extra";
 
 		try{
 		$st = $db->prepare($sql);
@@ -93,8 +92,11 @@
 		} catch (PDOException $e) {
 		echo $e->getMessage();
 		return false;	
-		}?>*/	
-			
+		}
+		
+		$actividadesExtra = $st->fetchAll(PDO::FETCH_ASSOC);
+			var_dump($actividadesExtra);
+
 		$sql = "SELECT actividad_extra_id
 			   FROM alumno_actividad_extra
 			   WHERE alumno_id=?
@@ -105,11 +107,12 @@
 		 } catch (PDOException $e) {
 		 echo $e->getMessage();
 		 return false;		   	
-	
+		 }
+
 		  $actividadesExtraAlumno = $st->fetchAll(PDO::FETCH_COLUMN);
 
 		   foreach ($actividadesExtra as $actividadExtra) {?>
-			
+
 			<tr>
                           <td class="extra"><label><?php echo $actividadExtra['nombre'] ?></label></td>
 			<?php
@@ -122,9 +125,9 @@
 			     <?php echo $estadoCheckbox ?> >
 			  </td>
 			</tr>
-		<?php }?>
-			
+		<?php }?>	
 		</tr>
+
 	      <tr>
 		<td><label>Nota:</label></td>
 		<td><input type="text" name="nota" value="nota"/></td>
@@ -162,8 +165,6 @@
 	});
 </script>
 
-
-    
 </body>
 </html>
 
